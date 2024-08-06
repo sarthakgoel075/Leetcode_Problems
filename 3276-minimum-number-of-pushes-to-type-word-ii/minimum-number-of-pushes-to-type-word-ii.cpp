@@ -1,13 +1,12 @@
 class Solution {
 public:
     int minimumPushes(string word) {
-        unordered_map<char,int>mp;
+        vector<int>v(26,0);
         for(auto i:word){
-            mp[i]++;
+            v[i-'a']++;
         }
-        vector<pair<int,int>>v(mp.begin(),mp.end());
         sort(v.begin(),v.end(),[](auto a,auto b){
-            return a.second>b.second;
+            return a>b;
         });
         int ans=0;
         int count=0;
@@ -18,7 +17,7 @@ public:
             i++;
             count=1;
           }
-          ans+=i*it.second;
+          ans+=i*it;
 
          }
          return ans;
