@@ -11,19 +11,13 @@
  */
 class Solution {
 public:
-    int fun(TreeNode* root,int curr){
-        int left=0;
-        int right=0;
+    int fun(TreeNode* root){
         if(root==NULL)return 0;
-        if(root->left){
-          left=  fun(root->left,curr+1);
-        }
-        if(root->right){
-            right=fun(root->right,curr+1);
-        }
-        return max(curr,max(left,right));
+        int left=fun(root->left);
+        int right=fun(root->right);
+        return max(left,right)+1;
     }
     int maxDepth(TreeNode* root) {
-        return fun(root,1);        
+        return fun(root);
     }
 };
