@@ -11,21 +11,20 @@
  */
 class Solution {
 public:
-    TreeNode* fun(unordered_map<int,int>&mp,vector<int>&preorder,int prestart,int preend, vector<int>& inorder,int instart,int inend){
+    TreeNode* fun(vector<int>&preorder,vector<int>& inorder,int prestart,int preend,int instart,int inend,unordered_map<int,int>&mp){
         if(prestart>preend || instart>inend)return NULL;
-        TreeNode* curr=new TreeNode(preorder[prestart]);
         int ind=mp[preorder[prestart]];
-        int num=ind-instart;
-        curr->left=fun(mp,preorder,prestart+1,prestart+num,inorder,instart,ind-1);
-        curr->right=fun(mp,preorder,prestart+num+1,preend,inorder,ind+1,inend);
-        return curr;
+        int len=ind-instart;
+        TreeNode* root=new TreeNode(preorder[prestart]);
+        root->left=fun(preorder,inorder,prestart+1,prestart+len,instart,ind-1,mp);
+        root->right=fun(preorder,inorder,prestart+len+1,preend,ind+1,inend,mp);
+        return root;
     }
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
         unordered_map<int,int>mp;
-        int n=preorder.size();
-        for(int i=0;i<n;i++){
+        for(int i=0;i<inorder.size();i++){
             mp[inorder[i]]=i;
         }
-        return fun(mp,preorder,0,preorder.size()-1,inorder,0,inorder.size()-1);
+        return fun(preorder,inorder,0,preorder.size()-1,0,inorder.size()-1,mp);
     }
 };
