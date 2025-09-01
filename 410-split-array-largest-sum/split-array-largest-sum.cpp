@@ -17,6 +17,7 @@ public:
         return count;
     }
     int splitArray(vector<int>& nums, int k) {
+        if(nums.size()<k)return -1;
         int low=0;
         int high=0;
         for(auto i:nums){
@@ -24,22 +25,19 @@ public:
             high+=i;
         }
 
-        int temp = low;
         int ans=INT_MAX;
         while(low<=high){
             int mid=(low+high)/2;
             int count=check(mid,nums);
-            if(count==k){
+            if(count<=k){
                 ans=min(ans,mid);
                 high=mid-1;
             }
-            else if(count>k){
+            else{
                 low=mid+1;
             }
-            else{
-                high=mid-1;
-            }
+          
         }
-        return ans == INT_MAX ? low : ans ;
+        return ans  ;
     }
 };
