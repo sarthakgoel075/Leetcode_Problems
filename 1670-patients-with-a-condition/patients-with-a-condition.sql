@@ -1,0 +1,1 @@
+SELECT * FROM patients WHERE  REGEXP_like (conditions,'(^| )DIAB1')
