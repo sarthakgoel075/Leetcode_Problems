@@ -1,20 +1,25 @@
 class Solution {
 public:
     int firstMissingPositive(vector<int>& nums) {
-        priority_queue<int,vector<int>,greater<int>>pq;
-        for(auto i:nums){
-            if(i>0)pq.push(i);
+        int one=0;
+        int n=nums.size();
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]==1)one=1;
+            if(nums[i]<=0 || nums[i]>n)nums[i]=1;
         }
-        int curr=1;
-       while(!pq.empty()){
-         if(pq.top()>curr){
-            return curr;
-         }
-         if(pq.top()==curr){
-         curr++;
-         }
-         pq.pop();
-       }
-       return curr;
+        for(int i=0;i<nums.size();i++){
+            int pos=abs(nums[i])-1;
+            if(nums[pos]>0){
+                nums[pos]=nums[pos]*-1;
+            }
+        }
+        int ans=0;
+        if(one==0)return 1;
+        for(int i=1;i<n;i++){
+            if(nums[i]>0){
+                return i+1;
+            }
+        }
+        return n+1;
     }
 };
