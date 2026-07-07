@@ -1,31 +1,33 @@
 class Solution {
 public:
-    bool check(int mid,vector<int>&piles,int h){
-        long long  curr=0;
+    int mini=INT_MAX;
+    void fun(int left,int right,int h,vector<int>&piles){
+        if (left>right) return ;
+        int mid = (left+right)/2;
+        long long total=0;
         for(auto i:piles){
-            curr+=i/mid;
-            if(i%mid!=0)curr++;
-        }
-        return curr<=(long long)h;
-    }
-    int minEatingSpeed(vector<int>& piles, int h) {
-        int lower=1;
-        int high=0;
-        
-        for(auto i:piles){
-            high=max(high,i);
-        }
-        int ans=high;
-        while(lower<=high){
-            int mid=(lower+high)/2;
-            if(check(mid,piles,h)){
-              ans=min(ans,mid);
-              high=mid-1;
+            if(i<=mid){
+                total+=1;
             }
             else{
-                lower=mid+1;
+               total += (i + mid - 1) / mid;
+            }}
+            if(total<=h){
+                mini=min(mini,mid);
+                fun(left,mid-1,h,piles);
+            }
+            else{
+                fun(mid+1,right,h,piles);
             }
         }
-        return ans;
+
+    int minEatingSpeed(vector<int>& piles, int h) {
+      int maxi=INT_MIN;
+      for(auto i:piles){
+        maxi=max(maxi,i);
+      }
+      int n=piles.size()-1;
+      fun(1,maxi,h,piles);
+      return mini;
     }
 };
