@@ -1,37 +1,29 @@
 class Solution {
 public:
-    bool search(vector<int>& nums, int target) {
-        int low = 0;
-        int high = nums.size() - 1;
-
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-
-            if (nums[mid] == target) return true;
-
-            // Handle ambiguity due to duplicates
-            if (nums[low] == nums[mid] && nums[mid] == nums[high]) {
-                low++;
-                high--;
-            }
-            // Left half is sorted
-            else if (nums[low] <= nums[mid]) {
-                if (target >= nums[low] && target < nums[mid]) {
-                    high = mid - 1;
-                } else {
-                    low = mid + 1;
-                }
-            }
-            // Right half is sorted
-            else {
-                if (target > nums[mid] && target <= nums[high]) {
-                    low = mid + 1;
-                } else {
-                    high = mid - 1;
-                }
-            }
+    int fun(vector<int>&nums,int left,int right,int target){
+        if(left>right)return false;
+        int mid=left + (right-left)/2;
+        if(nums[mid]==target)return true;
+         if (nums[left] == nums[mid] && nums[mid] == nums[right])
+            return fun(nums, left + 1, right - 1, target);
+        if(nums[left]<=nums[mid]){
+          if(nums[left]<=target && nums[mid]>target){
+            return fun(nums,left,mid-1,target);
+          }
+          else return fun(nums,mid+1,right,target);
         }
+        else{
+            if(nums[mid]<target && nums[right]>=target){
+               return  fun(nums,mid+1,right,target);
+            }
+            else{
+               return fun(nums,left,mid-1,target);
+            }
 
-        return false;
+        }
+        return true;
+    }
+    bool search(vector<int>& nums, int target) {
+       return fun(nums,0,nums.size()-1,target);
     }
 };
